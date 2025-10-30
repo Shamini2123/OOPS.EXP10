@@ -1,0 +1,122 @@
+// Design a student registration form with two JFrames.
+//First JFrame allows user to enter data using various Java Swing Controls such as textbox, radio button, check box and dropdown. 
+//Once the button is clicked, gather the data, and display the details in the second frame.import javax.swing.*;
+
+import java.awt.*;
+import java.awt.event.*;
+
+class RegisterForm extends JFrame implements ActionListener {
+    JTextField tname;
+    JRadioButton male, female;
+    JCheckBox apple, samsung, redmi, oneplus;
+    JComboBox<String> colorBox;
+    JButton save;
+
+    RegisterForm() {
+        setTitle("Register");
+        setLayout(null);
+
+        JLabel lname = new JLabel("Name:");
+        lname.setBounds(30, 30, 100, 30);
+        add(lname);
+
+        tname = new JTextField();
+        tname.setBounds(140, 30, 150, 30);
+        add(tname);
+
+        JLabel lgender = new JLabel("Gender:");
+        lgender.setBounds(30, 70, 100, 30);
+        add(lgender);
+
+        male = new JRadioButton("Male");
+        male.setBounds(140, 70, 70, 30);
+        female = new JRadioButton("Female");
+        female.setBounds(220, 70, 80, 30);
+        ButtonGroup bg = new ButtonGroup();
+        bg.add(male);
+        bg.add(female);
+        add(male);
+        add(female);
+
+        JLabel lmodel = new JLabel("Model:");
+        lmodel.setBounds(30, 110, 100, 30);
+        add(lmodel);
+
+        apple = new JCheckBox("Apple");
+        apple.setBounds(140, 110, 70, 30);
+        samsung = new JCheckBox("Samsung");
+        samsung.setBounds(210, 110, 90, 30);
+        redmi = new JCheckBox("Redmi");
+        redmi.setBounds(300, 110, 70, 30);
+        oneplus = new JCheckBox("OnePlus");
+        oneplus.setBounds(370, 110, 80, 30);
+        add(apple);
+        add(samsung);
+        add(redmi);
+        add(oneplus);
+
+        JLabel lcolor = new JLabel("Color:");
+        lcolor.setBounds(30, 150, 100, 30);
+        add(lcolor);
+
+        String colors[] = {"Black", "White", "Blue", "Red"};
+        colorBox = new JComboBox<>(colors);
+        colorBox.setBounds(140, 150, 150, 30);
+        add(colorBox);
+
+        save = new JButton("Save");
+        save.setBounds(180, 200, 100, 30);
+        add(save);
+        save.addActionListener(this);
+
+        setSize(500, 300);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        String name = tname.getText();
+        String gender = male.isSelected() ? "Male" : "Female";
+        String models = "";
+        if (apple.isSelected()) models += "Apple, ";
+        if (samsung.isSelected()) models += "Samsung, ";
+        if (redmi.isSelected()) models += "Redmi, ";
+        if (oneplus.isSelected()) models += "OnePlus, ";
+        if (models.endsWith(", ")) models = models.substring(0, models.length() - 2);
+
+        String color = (String) colorBox.getSelectedItem();
+
+        new DisplayForm(name, gender, models, color);
+    }
+}
+
+class DisplayForm extends JFrame implements ActionListener {
+    JButton ok;
+    DisplayForm(String name, String gender, String models, String color) {
+        setTitle("Display");
+        setLayout(new GridLayout(5, 1, 10, 10));
+
+        add(new JLabel("Name: " + name));
+        add(new JLabel("Gender: " + gender));
+        add(new JLabel("Model: " + models));
+        add(new JLabel("Color: " + color));
+
+        ok = new JButton("OK");
+        add(ok);
+        ok.addActionListener(this);
+
+        setSize(300, 200);
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        dispose();
+    }
+}
+
+public class StudentRegistration {
+    public static void main(String[] args) {
+        new RegisterForm();
+    }
+}
